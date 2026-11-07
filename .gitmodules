@@ -1,0 +1,10 @@
+[submodule "vendor/robot-hat"]
+	path = vendor/robot-hat
+	url = https://github.com/sunfounder/robot-hat.git
+	branch = 2.5.x
+[submodule "vendor/vilib"]
+	path = vendor/vilib
+	url = https://github.com/sunfounder/vilib.git
+[submodule "vendor/picrawler"]
+	path = vendor/picrawler
+	url = https://github.com/sunfounder/picrawler.git
