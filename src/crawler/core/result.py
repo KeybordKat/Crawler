@@ -1,14 +1,17 @@
 """Structured result returned by every skill, so agents get uniform feedback."""
-from __future__ import annotations
+from __future__ import annotations  #helps newer syntax work on older versions of python.
 
-from dataclasses import dataclass, field
-from typing import Any
+from dataclasses import dataclass, field    #Writes the boilerplate for you
+from typing import Any  #Typing hints
 
 
-@dataclass(frozen=True)
+@dataclass(frozen=True) #Mark class as data class and unchangeable
 class Result:
+    #Did the skill work?
     ok: bool
+    #Useful outputs
     data: dict[str, Any] = field(default_factory=dict)
+    #Error message (if exists)
     error: str | None = None
 
     @classmethod
