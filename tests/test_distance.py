@@ -32,6 +32,6 @@ def test_read_returns_float(sensor):
     """Test the read method returns a float"""
     assert isinstance(sensor.read(), float)
 
-def test_read_is_positive(sensor):
-    """Test the read method returns a positive number"""
+def test_read_is_not_negative(sensor):
+    """Test the read method doesn't return negatives"""
     assert sensor.read() >= 0

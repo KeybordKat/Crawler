@@ -118,8 +118,10 @@ Every piece is built test-first (red, green, refactor):
 1. Project skeleton and conventions  (done)
 2. HAL and mocks  <- in progress
    - Done: `HardwareError`, `Distance` interface, `MockDistance` (with fail on demand), shared contract tests
-   - Next: `Battery` (interface, mock, contract tests)
-   - Pending on the Pi: `RealDistance` (add a `"real"` entry to the contract fixture, mark `@pytest.mark.hardware`)
+   - Done: `Battery` interface, `MockBattery` (with fail on demand, `read_voltage()` returns volts as a float), shared contract tests
+   - Next: `Legs` (interface, mock that records the actions it is asked to perform, contract tests). Start with `stand()`
+   - Then: `Speaker`, `Camera`, then the `create_hal` factory
+   - Pending on the Pi: `RealDistance` and `RealBattery` (add a `"real"` entry to each contract fixture, mark `@pytest.mark.hardware`)
 3. Safety and executor
 4. Skills catalog
 5. Tool registry

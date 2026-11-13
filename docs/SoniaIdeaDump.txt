@@ -1,0 +1,2 @@
+- Rock paper scissors. The crawler plays rock paper scissors with you. It can learn how to play against its opponent.
+It can show the moves it makes on the screen, and uses its camera to figure out what move you played.

@@ -17,7 +17,7 @@ class MockDistance(Distance):
         self.fail = fail
 
     def read(self):
-        """Returns the distance it was given in the constructor"""
+        """Returns the distance it was given in the constructor or raises an error if told to"""
         if self.fail:
             raise HardwareError("distance sensor timeout")
         return self.distance_cm
