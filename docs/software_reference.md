@@ -72,7 +72,7 @@ limit_angle(angles)      # clamp to mechanical limits
 
 ```python
 do_action(motion_name, step=1, speed=50)
-# Run a named gait N steps. speed = 1–100.
+# Run a named gait N steps. speed = 0–100 (0 is the slowest, not stopped; the SDK clamps values outside this range).
 
 do_step(step, speed=50, israise=False)
 # Execute one motion frame directly.

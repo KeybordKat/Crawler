@@ -1,2 +1,19 @@
+LLM agent skills I want to create at some point
 - Rock paper scissors. The crawler plays rock paper scissors with you. It can learn how to play against its opponent.
-It can show the moves it makes on the screen, and uses its camera to figure out what move you played.
+It can show the moves it makes on the screen and uses its camera to figure out what move you played.
+- Remembering faces by saving them as embeddings.
+- Generally recognising hand gestures
+- Allow remote control functionality.
+- See footage from the crawler on my phone (see it on the remote screen???)
+- Dance to music???
+- Face tracking
+- No clue how tf this would work and if servos are precise enough, but drawing??? Would need to build attachment.
+- We obviously need mood and personality. Plus the screen will have a face.
+- Pretty basic but i want it to wave somehow.
+- It knows the time so it says good morning and afternoon accordingly.
+- High five
+- idle life stuff like looking around, emoting, stretching, napping, etc. I want it to have autonomy.
+- Battery life tied to mood e.g sleepy sad down etc.
+- Can be petted
+- Little sounds like beeps and chirps to give it more personality.
+- Can't walk off of edges, tells me when its battery is low,
