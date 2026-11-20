@@ -130,7 +130,13 @@ Every piece is built test-first (red, green, refactor):
      - Done: refactor. The shared request rules (speed 0-100, steps a positive `int`, direction in an allowed set) live in one helper, `Legs._check_request`, on the interface so every implementation, including the real one, gets the same rules. `walk` and `turn` call it with their own allowed directions
      - Done: `turn` added to the contract tests (`test_turn_succeeds`, plus bad-request tests that use the `legs` fixture)
      - Later: a `"real"` entry in the `legs` fixture on the Pi (marked `@pytest.mark.hardware`)
-   - Then: `Speaker`, `Camera`, then the `create_hal` factory
+   - Done (mock side): `Speaker` (interface, mock that records what it is asked to say, contract tests). Only the real speaker is left, which needs the Pi
+     - Done: `speak(text)` on the interface and `MockSpeaker`, built test-first. The mock records each text in a `spoken` list, with fail on demand (a failed speak is not recorded)
+     - Done: `ValueError` validation, built one red test at a time. Text must be a string and must not be empty or whitespace-only. The checks run before the fail-on-demand check, so a bad request is always a `ValueError`
+     - Done: refactor. The shared rules live in one helper, `Speaker._check_request`, on the interface so every implementation, including the real one, gets the same rules. The bad-request tests are one `pytest.mark.parametrize` test
+     - Done: shared contract tests for `Speaker`, using a `speaker` fixture (only a `"mock"` entry for now). They check that `speak` succeeds and that bad requests raise `ValueError`. Mock-only behavior (`spoken`, `fail=True`) stays out of the contract tests
+     - Later: a `"real"` entry in the `speaker` fixture on the Pi (marked `@pytest.mark.hardware`)
+   - Then: `Camera`, then the `create_hal` factory
    - Pending on the Pi: `RealDistance` and `RealBattery` (add a `"real"` entry to each contract fixture, mark `@pytest.mark.hardware`)
 3. Safety and executor
 4. Skills catalog
