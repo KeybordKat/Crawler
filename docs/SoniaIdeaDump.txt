@@ -16,4 +16,6 @@ It can show the moves it makes on the screen and uses its camera to figure out w
 - Battery life tied to mood e.g sleepy sad down etc.
 - Can be petted
 - Little sounds like beeps and chirps to give it more personality.
-- Can't walk off of edges, tells me when its battery is low,
+- Can't walk off of edges, tells me when its battery is low
+- Listen and create notes based on what it captures.
+- Silent mode: Robot sends notifications to my phone instead of speaking back.

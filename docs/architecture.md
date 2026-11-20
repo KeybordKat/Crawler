@@ -1,7 +1,7 @@
 # Software Architecture
 
 Goal: low-level robot functions that double as **agentic tools** for a local LLM
-(Raspberry Pi 5, 8 GB, on order; the robot currently runs a Pi 3). Everything is organised in strict layers.
+(Raspberry Pi 5, 8 GB, now installed in the robot). Everything is organised in strict layers.
 
 ## Decisions
 
@@ -10,7 +10,7 @@ Goal: low-level robot functions that double as **agentic tools** for a local LLM
 | LLM location | Local, on the Pi 5 | Tools run in the same process as the agent |
 | Tool protocol | Plain function-calling schemas | MCP may be added later as a thin wrapper over layer 4 |
 | Concurrency | Threads + a hardware lock | SDK is blocking; executor is the only hardware owner |
-| Target hardware | Pi 5 (8 GB) | Robot runs a Pi 3 (B+) until the Pi 5 arrives. Design for the Pi 5, keep Pi 3 code lightweight, no local LLM on the Pi 3 |
+| Target hardware | Pi 5 (8 GB) | Pi 5 is installed in the robot (with fan), not yet set up. It replaces the earlier Pi 3 (B+) |
 | Development method | Test-first | See "Development method: tests first" |
 | HAL return values | Plain values (`float`, `bool`, ...) | HAL is low-level. Skills (layer 3) wrap outcomes in `Result` |
 | HAL errors | Raise, never return magic numbers | `ValueError` for a request outside hardware limits. `HardwareError` when the hardware fails (e.g. sensor timeout) |
@@ -119,13 +119,17 @@ Every piece is built test-first (red, green, refactor):
 2. HAL and mocks  <- in progress
    - Done: `HardwareError`, `Distance` interface, `MockDistance` (with fail on demand), shared contract tests
    - Done: `Battery` interface, `MockBattery` (with fail on demand, `read_voltage()` returns volts as a float), shared contract tests
-   - In progress: `Legs` (interface, mock that records the actions it is asked to perform, contract tests)
+   - Done (mock side): `Legs` (interface, mock that records the actions it is asked to perform, contract tests). Only the real legs are left, which need the Pi
      - Done: `stand()` and `sit()` on the interface and `MockLegs` (records actions, fail on demand, failed actions are not recorded), with tests for each
      - Done: `walk(direction, steps, speed)` on the interface and `MockLegs`, the first method with arguments. Records `("walk", direction, steps, speed)` as a tuple, with fail on demand (failed walks are not recorded), and a test for each
      - Done: `ValueError` validation for `walk`, built one red test at a time. Speed must be 0-100 (0 is the slowest, not stopped), direction must be `"forward"` or `"backward"`, and steps must be a positive `int`. The checks run before the fail-on-demand check, so a bad request is always a `ValueError`
      - Done: refactored the repeated tests with `pytest.mark.parametrize` (failed actions are not recorded, actions are recorded, `walk` rejects bad requests)
      - Done: consistent recorded format. Every action is a tuple with the action name first, then its arguments: `("stand",)`, `("sit",)`, `("walk", direction, steps, speed)`
-     - Later: turning, and the shared contract tests
+     - Done: shared contract tests for `Legs`, using a `legs` fixture (only a `"mock"` entry for now). They check that `walk` rejects bad requests, and that `stand`, `sit` and a valid `walk` (including speeds 0 and 100) succeed. Mock-only behavior (`actions`, `fail=True`) stays out of the contract tests
+     - Done: `turn(direction, steps, speed)` on the interface and `MockLegs`, built test-first like `walk`. Direction must be `"left"` or `"right"`. Records `("turn", direction, steps, speed)`, with fail on demand (failed turns are not recorded). Bad requests raise `ValueError` before the fail check
+     - Done: refactor. The shared request rules (speed 0-100, steps a positive `int`, direction in an allowed set) live in one helper, `Legs._check_request`, on the interface so every implementation, including the real one, gets the same rules. `walk` and `turn` call it with their own allowed directions
+     - Done: `turn` added to the contract tests (`test_turn_succeeds`, plus bad-request tests that use the `legs` fixture)
+     - Later: a `"real"` entry in the `legs` fixture on the Pi (marked `@pytest.mark.hardware`)
    - Then: `Speaker`, `Camera`, then the `create_hal` factory
    - Pending on the Pi: `RealDistance` and `RealBattery` (add a `"real"` entry to each contract fixture, mark `@pytest.mark.hardware`)
 3. Safety and executor

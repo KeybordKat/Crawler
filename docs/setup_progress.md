@@ -23,6 +23,18 @@
 - [x] Servo calibration complete (`~/picrawler/examples/0_calibration.py`)
 - [x] First movement test passed — robot stood and walked forward
 
-## Setup Complete
+## Setup Complete (on the Pi 3B+)
 
-The robot is fully operational. Next steps are up to you — see `expansion_ideas.md` for ideas.
+The robot was fully operational on the Pi 3B+. Next steps are up to you — see `expansion_ideas.md` for ideas.
+
+## Upgrade to Raspberry Pi 5 (8 GB)
+- [x] Pi 5 received and installed in the robot
+- [x] Cooling fan attached
+- [ ] OS flashed to SD card (64-bit Raspberry Pi OS)
+- [ ] First boot, WiFi, SSH
+- [ ] OS updated, locale fixed
+- [ ] `robot-hat`, `vilib`, `picrawler` installed (check they work on the Pi 5)
+- [ ] Robot HAT detected on I2C bus at `0x14`
+- [ ] Servo calibration checked
+- [ ] First movement test
+- [ ] Mac to Pi upload workflow set up
