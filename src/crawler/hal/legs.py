@@ -27,12 +27,12 @@ class MockLegs(Legs):
     def stand(self):
         if self.fail:
             raise HardwareError("legs failed")
-        self.actions.append("stand")
+        self.actions.append(("stand",))
 
     def sit(self):
         if self.fail:
             raise HardwareError("legs failed")
-        self.actions.append("sit")
+        self.actions.append(("sit",))
 
     def walk(self, direction, steps, speed):
         #only accept valid speed

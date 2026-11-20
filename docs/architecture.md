@@ -123,7 +123,9 @@ Every piece is built test-first (red, green, refactor):
      - Done: `stand()` and `sit()` on the interface and `MockLegs` (records actions, fail on demand, failed actions are not recorded), with tests for each
      - Done: `walk(direction, steps, speed)` on the interface and `MockLegs`, the first method with arguments. Records `("walk", direction, steps, speed)` as a tuple, with fail on demand (failed walks are not recorded), and a test for each
      - Done: `ValueError` validation for `walk`, built one red test at a time. Speed must be 0-100 (0 is the slowest, not stopped), direction must be `"forward"` or `"backward"`, and steps must be a positive `int`. The checks run before the fail-on-demand check, so a bad request is always a `ValueError`
-     - Later: refactor the repeated stand/sit tests and mock code (e.g. `pytest.mark.parametrize`), decide a consistent format for recorded actions (strings vs tuples), turning, and the shared contract tests
+     - Done: refactored the repeated tests with `pytest.mark.parametrize` (failed actions are not recorded, actions are recorded, `walk` rejects bad requests)
+     - Done: consistent recorded format. Every action is a tuple with the action name first, then its arguments: `("stand",)`, `("sit",)`, `("walk", direction, steps, speed)`
+     - Later: turning, and the shared contract tests
    - Then: `Speaker`, `Camera`, then the `create_hal` factory
    - Pending on the Pi: `RealDistance` and `RealBattery` (add a `"real"` entry to each contract fixture, mark `@pytest.mark.hardware`)
 3. Safety and executor
