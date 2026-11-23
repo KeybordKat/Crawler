@@ -7,6 +7,7 @@ Development workspace for the **SunFounder PiCrawler** — a 12-DOF quadruped ro
 - [`docs/technical_specifications.md`](docs/technical_specifications.md) — Hardware specs, servo data, controller board, sensors, power system
 - [`docs/software_reference.md`](docs/software_reference.md) — Python SDK, core classes, gait API, vision, AI stack
 - [`docs/expansion_ideas.md`](docs/expansion_ideas.md) — Ideas for hardware and software extensions
+- [`docs/hardware_plan.md`](docs/hardware_plan.md) — Pi 5 ports, speaker and microphone (bought), screen options (undecided), wiring notes
 
 ## Project Layout
 

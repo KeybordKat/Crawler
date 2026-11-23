@@ -29,8 +29,8 @@
 |---|---|
 | **Gripper / claw** | Servo-driven end-effector on front leg; enables pick-and-place; replace one front tibia servo |
 | **Tail / counterbalance** | Servo-driven rear appendage to shift CoM during climbing |
-| **Active LED eyes** | I2C OLED displays (SSD1306 or SSD1351) for expression/emotion display — popular community mod |
-| **Louder speaker** | Replace onboard 1 W with external 3–5 W for voice assistant clarity |
+| **Active LED eyes** | I2C OLED displays (SSD1306 or SSD1351) for expression/emotion display — popular community mod. For a colour screen, see the SPI/DSI options in `hardware_plan.md` |
+| **Louder speaker** | Done for our robot: the onboard 1 W speaker was removed and replaced with a USB speaker (2x2 W). See `hardware_plan.md` |
 | **Stronger servos** | Upgrade tibias to higher-torque servos (e.g., SF3220) to improve load capacity on rough terrain |
 
 ### Power

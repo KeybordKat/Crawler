@@ -30,11 +30,24 @@ The robot was fully operational on the Pi 3B+. Next steps are up to you — see 
 ## Upgrade to Raspberry Pi 5 (8 GB)
 - [x] Pi 5 received and installed in the robot
 - [x] Cooling fan attached
-- [ ] OS flashed to SD card (64-bit Raspberry Pi OS)
+- [ ] Try the old Pi 3B+ SD card in the Pi 5. It only boots if the OS is Bookworm or newer (64-bit). If it does not boot, reflash 64-bit Raspberry Pi OS (Bookworm) Lite with Raspberry Pi Imager and set WiFi, SSH and the hostname `picrawler` there
+- [ ] OS flashed to SD card (only if the old card does not boot)
 - [ ] First boot, WiFi, SSH
 - [ ] OS updated, locale fixed
 - [ ] `robot-hat`, `vilib`, `picrawler` installed (check they work on the Pi 5)
 - [ ] Robot HAT detected on I2C bus at `0x14`
-- [ ] Servo calibration checked
+- [ ] Servo calibration checked (values are stored on the card, so they may carry over if the old card is reused)
 - [ ] First movement test
+- [ ] Camera cable received (the old 15-pin cable does not fit the Pi 5's 22-pin CSI port) and plugged in
+- [ ] Camera detected (`rpicam-hello --list-cameras`). Check `vilib` works with the Pi 5 camera stack
 - [ ] Mac to Pi upload workflow set up
+
+## New Hardware (Pi 5)
+Details in `hardware_plan.md`. The robot HAT's onboard speaker was removed (it did not fit with the fan and never worked well).
+- [x] Speaker chosen and bought: Pi Hut Mini External USB Stereo Speaker
+- [x] Microphone chosen and bought: Pi Hut Mini USB Microphone
+- [ ] Speaker and microphone received and plugged into USB
+- [ ] Check both show up as audio devices on the Pi 5 (and install PulseAudio if needed)
+- [ ] Set microphone input gain and test recording
+- [ ] Screen chosen (undecided: DSI, micro HDMI, or SPI on the HAT)
+- [ ] Screen bought, connected and tested

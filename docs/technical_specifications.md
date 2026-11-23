@@ -62,8 +62,8 @@ Raspberry Pi HAT providing servo control, ADC, digital I/O, audio, and power man
 | SPI | P2.54 7-pin; GPIO 6/8/9/10/11 |
 | UART | P2.54 4-pin |
 | Motor driver | 2 channels; Motor1: GPIO23 dir + PWM13; Motor2: GPIO24 dir + PWM12 |
-| Audio out | I2S mono speaker, 8 Ω 1 W (GPIO18/19/21) |
-| Microphone | None on V4 (V5 adds onboard I2S MEMS mic) |
+| Audio out | I2S mono speaker, 8 Ω 1 W (GPIO18/19/21). **Our robot's onboard speaker has been removed**, so the HAT audio is unused. Audio goes over USB instead, see `hardware_plan.md` |
+| Microphone | None on V4 (V5 adds onboard I2S MEMS mic). A USB microphone is used instead |
 | User controls | 1 LED (GPIO26), USR button (GPIO25), RST button (GPIO16) |
 | Power input | 6.0–8.4 V via XH2.54 3-pin |
 | Charging port | Type-C USB 5 V/2 A (~10 W), integrated balancer |
@@ -126,6 +126,18 @@ Raspberry Pi HAT providing servo control, ADC, digital I/O, audio, and power man
 | Range | 2–500 cm |
 | Accuracy | ±3 mm |
 | Interface | GPIO digital (TRIG → D2/GPIO27, ECHO → D3/GPIO22) |
+
+---
+
+## Added Hardware (not in the kit)
+
+| Part | Connection | Status |
+|---|---|---|
+| Pi Hut Mini External USB Stereo Speaker (2x2 W, 5 V) | USB | Bought, not yet connected |
+| Pi Hut Mini USB Microphone | USB | Bought, not yet connected |
+| Screen | Undecided (DSI, micro HDMI, or SPI on the HAT) | Not bought |
+
+Details, port inventory and wiring notes are in `hardware_plan.md`.
 
 ---
 

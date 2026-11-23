@@ -52,7 +52,7 @@ def test_walk_rejects_bad_request(legs,direction, steps, speed):
     ("forward", 1, 100)
 ])
 def test_walk_succeeds(legs, direction, steps, speed):
-    """Check if walk succeeds"""
+    """Check if walk action succeeds"""
     legs.walk(direction, steps, speed)
 
 #Sit and stand tests
