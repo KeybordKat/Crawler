@@ -49,5 +49,6 @@ Details in `hardware_plan.md`. The robot HAT's onboard speaker was removed (it d
 - [ ] Speaker and microphone received and plugged into USB
 - [ ] Check both show up as audio devices on the Pi 5 (and install PulseAudio if needed)
 - [ ] Set microphone input gain and test recording
-- [ ] Screen chosen (undecided: DSI, micro HDMI, or SPI on the HAT)
-- [ ] Screen bought, connected and tested
+- [x] Screen chosen and ordered: iPistBit 4.3" DSI IPS touch screen, 800x480
+- [ ] Screen received. Check it comes with a 22-pin cable (the Pi 5 port is 22-pin)
+- [ ] Screen connected and tested on the Pi 5 (fits on the robot, does not block the camera cable)

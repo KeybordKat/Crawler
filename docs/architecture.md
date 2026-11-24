@@ -12,11 +12,11 @@ Goal: low-level robot functions that double as **agentic tools** for a local LLM
 | Concurrency | Threads + a hardware lock | SDK is blocking; executor is the only hardware owner |
 | Target hardware | Pi 5 (8 GB) | Pi 5 is installed in the robot (with fan), not yet set up. It replaces the earlier Pi 3 (B+) |
 | Audio hardware | USB speaker and USB microphone | The HAT's onboard speaker was removed and the HAT has no mic. The real `Speaker` uses USB audio, not the HAT. See `docs/hardware_plan.md` |
-| Display hardware | Undecided | DSI, micro HDMI, or SPI on the HAT. A `Display` HAL interface will be added once chosen |
+| Display hardware | iPistBit 4.3" DSI screen (ordered) | Not yet tested on the Pi 5. Falls back to an SPI screen on the HAT if it does not work. A `Display` HAL interface will be added. See `docs/hardware_plan.md` |
 | Development method | Test-first | See "Development method: tests first" |
 | HAL return values | Plain values (`float`, `bool`, ...) | HAL is low-level. Skills (layer 3) wrap outcomes in `Result` |
 | HAL errors | Raise, never return magic numbers | `ValueError` for a request outside hardware limits. `HardwareError` when the hardware fails (e.g. sensor timeout) |
-| Real vs mock location | Separate files, real ones imported lazily | Interface + mock in `hal/<name>.py`, real in `hal/real/<name>.py`, chosen by a factory |
+| Real vs mock location | Separate files, real ones imported lazily | Interface + mock in `hal/<name>.py`, real in `hal/real/<name>.py`, chosen by the assembler |
 
 ## Layers (a layer only calls the one directly below it)
 
@@ -97,7 +97,7 @@ hal/
     distance.py
 ```
 
-- A factory function (e.g. `create_hal(real=True/False)`) is the single place that picks mock or real. It imports `hal/real/` only on the Pi, so the Mac never imports the SDK.
+- An assembler function (`assemble_hal(real=True/False)`, in `hal/assembler.py`) is the single place that picks mock or real. It imports `hal/real/` only on the Pi, so the Mac never imports the SDK.
 - Any implementation, mock or real, must pass the same shared contract tests.
 - Error handling: `ValueError` for a bad request (outside hardware capability, e.g. speed above the maximum). `HardwareError` for a hardware failure with a valid request. `HardwareError` lives in `core/errors.py`.
 - The SDK's `Ultrasonic.read()` returns `-1` on timeout and `-2` on a bad pulse. The real `Distance` must convert these into `HardwareError`, never pass them up as distances.
@@ -142,8 +142,10 @@ Every piece is built test-first (red, green, refactor):
      - Done: `take_photo()` on the interface and `MockCamera`, built test-first. It returns the photo as `bytes`, with fail on demand (`fail=True` raises `HardwareError`)
      - Done: shared contract test for `Camera`, using a `camera` fixture (only a `"mock"` entry for now). It checks that `take_photo` returns `bytes`. Mock-only behavior (`fail=True`) stays out of the contract tests
      - Later: a `"real"` entry in the `camera` fixture on the Pi (marked `@pytest.mark.hardware`)
-   - Next: the `create_hal` factory
-   - Planned: `Microphone` (USB mic, bought) and `Display` (screen not chosen yet). Not in the layer 1 list until they are built
+   - Done (mock side): the `assemble_hal(real=False)` assembler in `hal/assembler.py`, built test-first one device at a time. It returns a `Hal` object holding `speaker`, `camera`, `legs`, `battery` and `distance` (all mocks). `Hal` has no default arguments, so it cannot be built with a part missing. One parametrized test checks that each device is the right mock class
+     - Later: the `real=True` branch on the Pi. When real devices exist, change the test to check against the interfaces (`Speaker`, `Camera`, `Legs`, `Battery`, `Distance`) so it covers both mock and real
+   - Next: the `Microphone` interface and mock
+   - Planned: `Microphone` (USB mic, bought) and `Display` (DSI screen ordered). Not in the layer 1 list until they are built
    - Pending on the Pi: `RealDistance` and `RealBattery` (add a `"real"` entry to each contract fixture, mark `@pytest.mark.hardware`)
 3. Safety and executor
 4. Skills catalog

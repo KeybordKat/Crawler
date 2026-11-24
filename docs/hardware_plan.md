@@ -11,9 +11,9 @@ Constraints: parts must ship to the UK, most parts should cost about £10 or les
 | Speaker | Bought | [Pi Hut Mini External USB Stereo Speaker](https://thepihut.com/products/mini-external-usb-stereo-speaker) | £10.90 |
 | Microphone | Bought | [Pi Hut Mini USB Microphone](https://thepihut.com/products/mini-usb-microphone) | £5.20 (one page showed £10.90) |
 | Camera cable | Ordered, waiting | 22-pin (Pi 5 end) to 15-pin (camera end) | The old 15-pin to 15-pin cable does not fit the Pi 5 |
-| Screen | **Undecided** | See "Screen options" | |
+| Screen | Ordered, waiting | iPistBit 4.3" DSI IPS capacitive touch screen, 800x480 | £16.17 delivered (listed £27.62, sale price) |
 
-Prices are from search results and may have changed. Neither part has been connected or tested yet.
+Prices are from search results and may have changed. None of the parts have been connected or tested yet.
 
 ## Pi 5 ports
 
@@ -21,7 +21,7 @@ Prices are from search results and may have changed. Neither part has been conne
 |---|---|---|---|
 | USB | 2x USB 3.0, 2x USB 2.0 | none | all 4 (speaker and mic will use 2) |
 | Micro HDMI | 2 | none | both |
-| 22-pin CSI/DSI | 2 (each takes a camera or a display) | 1 (camera) | 1 |
+| 22-pin CSI/DSI | 2 (each takes a camera or a display) | 1 (camera), 1 more when the screen arrives | 1 now, 0 after the screen |
 | 3.5mm audio jack | none (removed on the Pi 5) | n/a | n/a |
 | 40-pin GPIO | 1 | Robot HAT V4 | none |
 
@@ -41,7 +41,19 @@ Notes:
 - The HAT's own I2S audio (GPIO18/19/21) is no longer used. Do not use those pins for anything else without checking.
 - Software: the real `Speaker` will use USB audio, not the HAT. A `Microphone` HAL interface will be needed. See `docs/architecture.md`.
 
-## Screen options (undecided)
+## Screen (ordered)
+
+Chosen: the iPistBit 4.3" DSI IPS capacitive touch screen, 800x480, £16.17 delivered. It is bigger and cheaper than the Waveshare DSI screens below. Touch comes with it but is not needed.
+
+Seller comments mostly say it works out of the box on a Pi 5, so the plan is to hope that is true. The listing's "no drivers needed" line is an AI summary, so it is not proof.
+
+To check when it arrives:
+- The cable. These screens usually ship with a 15-pin cable, and the Pi 5 port is 22-pin. If the box has no 22-pin cable, buy the display adapter cable in the table below.
+- If the screen stays blank, the seller's page or wiki may give a `dtoverlay=` line to add to `/boot/firmware/config.txt`.
+- Where it fits on the robot. The board is about 10 cm wide, and the chassis, HAT and fan may be in the way.
+- Whether the screen's cable blocks the camera cable or any other port.
+
+## Screen options considered
 
 The screen could go on the Pi 5's free DSI port, a micro HDMI port, or the HAT's free headers. Only SPI (and I2C OLED) fit at around £10. I already have a small I2C OLED, but I want colour and a bigger screen.
 
@@ -60,6 +72,8 @@ Findings:
 - If buying on AliExpress, check the driver chip (ST7789 or ILI9341), the pin count (7, 8 or 12), 3.3 V logic, and whether header pins are soldered on.
 
 ## Wiring a SPI screen to the Robot HAT V4
+
+Only needed if the DSI screen does not work out and I fall back to an SPI screen.
 
 Worked out from the HAT spec and not yet checked against the board. Check the physical pin order of the HAT's SPI and digital headers first.
 
@@ -81,5 +95,5 @@ Worked out from the HAT spec and not yet checked against the board. Check the ph
 
 ## Open decisions
 
-- Which screen to buy.
+- Whether the DSI screen works on the Pi 5 and fits on the robot. If not, fall back to an SPI screen.
 - Whether to add a `Display` HAL interface (and `Microphone`) to the architecture plan.
