@@ -23,7 +23,7 @@ Goal: low-level robot functions that double as **agentic tools** for a local LLM
 | # | Layer | Purpose | Path |
 |---|---|---|---|
 | 0 | SunFounder SDK | `picrawler`, `robot-hat`, `vilib` (read-only) | `vendor/` |
-| 1 | HAL | Interfaces (`Legs`, `Distance`, `Camera`, `Speaker`, `Battery`) with real + mock implementations | `src/crawler/hal/` |
+| 1 | HAL | Interfaces (`Legs`, `Distance`, `Camera`, `Speaker`, `Battery`, `Microphone`) with real + mock implementations | `src/crawler/hal/` |
 | 2 | Safety / executor | Sole hardware owner: lock, limits, timeouts, cancel, e-stop, battery/fall/obstacle guards | `src/crawler/core/` |
 | 3 | Skills | Agent-facing functions with typed args, returning `Result` | `src/crawler/skills/` |
 | 4 | Tool registry | Generates function-calling schemas from skills; risk + blocking tags | `src/crawler/tools/` |
@@ -57,7 +57,7 @@ Goal: low-level robot functions that double as **agentic tools** for a local LLM
                               │
  1 ┌──────────────────────────▼──────────────────────────────┐
    │ HAL                     src/crawler/hal/                │
-   │ Legs · Distance · Camera · Speaker · Battery            │
+   │ Legs · Distance · Camera · Speaker · Battery · Mic      │
    │ ┌───────────────┐        ┌───────────────┐              │
    │ │ Mock versions │        │ Real versions │              │
    │ │ (run on Mac)  │        │ (run on Pi)   │              │
@@ -142,10 +142,15 @@ Every piece is built test-first (red, green, refactor):
      - Done: `take_photo()` on the interface and `MockCamera`, built test-first. It returns the photo as `bytes`, with fail on demand (`fail=True` raises `HardwareError`)
      - Done: shared contract test for `Camera`, using a `camera` fixture (only a `"mock"` entry for now). It checks that `take_photo` returns `bytes`. Mock-only behavior (`fail=True`) stays out of the contract tests
      - Later: a `"real"` entry in the `camera` fixture on the Pi (marked `@pytest.mark.hardware`)
-   - Done (mock side): the `assemble_hal(real=False)` assembler in `hal/assembler.py`, built test-first one device at a time. It returns a `Hal` object holding `speaker`, `camera`, `legs`, `battery` and `distance` (all mocks). `Hal` has no default arguments, so it cannot be built with a part missing. One parametrized test checks that each device is the right mock class
-     - Later: the `real=True` branch on the Pi. When real devices exist, change the test to check against the interfaces (`Speaker`, `Camera`, `Legs`, `Battery`, `Distance`) so it covers both mock and real
-   - Next: the `Microphone` interface and mock
-   - Planned: `Microphone` (USB mic, bought) and `Display` (DSI screen ordered). Not in the layer 1 list until they are built
+   - Done (mock side): the `assemble_hal(real=False)` assembler in `hal/assembler.py`, built test-first one device at a time. It returns a `Hal` object holding `speaker`, `camera`, `legs`, `battery`, `distance` and `microphone` (all mocks). `Hal` has no default arguments, so it cannot be built with a part missing. One parametrized test checks that each device is the right mock class
+     - Later: the `real=True` branch on the Pi. When real devices exist, change the test to check against the interfaces (`Speaker`, `Camera`, `Legs`, `Battery`, `Distance`, `Microphone`) so it covers both mock and real
+   - Done (mock side): `Microphone` (interface, mock, contract tests). Only the real microphone is left, which needs the Pi and the USB mic
+     - Done: `record(seconds)` on the interface and `MockMicrophone`, built test-first. It returns the audio as `bytes`, with fail on demand (`fail=True` raises `HardwareError`)
+     - Done: `ValueError` validation. Seconds must be a number (`int` or `float`, not `bool`), greater than 0 and at most 60. The checks run before the fail-on-demand check. The shared rules live in `Microphone._check_request`, so every implementation gets them. Tests cover both sides of the limit (61 rejected, 60 accepted)
+     - Done: shared contract tests for `Microphone`, using a `microphone` fixture (only a `"mock"` entry for now). Mock-only behavior (`fail=True`) stays out of the contract tests
+     - Later: a `"real"` entry in the `microphone` fixture on the Pi (marked `@pytest.mark.hardware`)
+   - Next: the `Display` interface and mock
+   - Planned: `Display` (DSI screen ordered). It will be added to the assembler once its mock exists
    - Pending on the Pi: `RealDistance` and `RealBattery` (add a `"real"` entry to each contract fixture, mark `@pytest.mark.hardware`)
 3. Safety and executor
 4. Skills catalog

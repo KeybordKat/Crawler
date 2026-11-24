@@ -5,6 +5,7 @@ from crawler.hal.camera import MockCamera
 from crawler.hal.legs import MockLegs
 from crawler.hal.battery import MockBattery
 from crawler.hal.distance import MockDistance
+from crawler.hal.microphone import MockMicrophone
 import pytest
 
 @pytest.mark.parametrize("name, mock_class", [
@@ -13,6 +14,7 @@ import pytest
     ("legs", MockLegs),
     ("battery", MockBattery),
     ("distance", MockDistance),
+    ("microphone", MockMicrophone),
 ])
 def test_mock_hal_has_mock_devices(name, mock_class):
     """Check if mock hal correctly selects mock device types"""
